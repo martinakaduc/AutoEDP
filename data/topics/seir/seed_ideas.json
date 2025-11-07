@@ -1,0 +1,9 @@
+[
+    {
+        "question": "How to incorporate age-structured contact patterns into SEIR models to improve prediction accuracy?",
+        "motivation": "Incorporating age-structured contact patterns can enhance the realism of SEIR models by accounting for varying interaction rates among different age groups. This can lead to more accurate predictions of disease spread and inform targeted intervention strategies.",
+        "interestingness": 9,
+        "feasibility": 8,
+        "novelty": 9
+    }
+]

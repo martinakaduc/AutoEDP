@@ -1,0 +1,16 @@
+[
+  {
+    "question": "What machine learning techniques can be employed to improve the accuracy of earthquake prediction models?",
+    "motivation": "Machine learning techniques can analyze complex patterns in seismic data, potentially leading to more accurate predictions.",
+    "interestingness": 9,
+    "feasibility": 8,
+    "novelty": 9
+  },
+  {
+    "question": "How to leverage transfer learning for earthquake prediction using pre-trained models?",
+    "motivation": "Transfer learning can significantly reduce the amount of labeled data required for training by leveraging knowledge from related tasks. This is particularly useful in earthquake prediction, where labeled data may be scarce.",
+    "interestingness": 8,
+    "feasibility": 8,
+    "novelty": 9
+  }
+]

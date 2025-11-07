@@ -1,0 +1,35 @@
+[Unit]
+Description=vLLM Wrapper Server with OpenAI-compatible API
+After=network.target
+Wants=vllm.service
+
+[Service]
+Type=simple
+User=vllm
+Group=vllm
+WorkingDirectory=/data/martin/open_deep_research/src/train
+Environment="PATH=/data/martin/open_deep_research/deeprs_env/bin:/usr/local/bin:/usr/bin:/bin"
+ExecStart=/data/martin/open_deep_research/deeprs_env/bin/python wrapper_server.py \
+    --host 0.0.0.0 \
+    --port 8082 \
+    --vllm-url http://localhost:8081/v1 \
+    --log-dir /var/log/vllm-wrapper \
+    --workers 4
+
+# Restart policy
+Restart=on-failure
+RestartSec=5s
+StartLimitBurst=3
+StartLimitInterval=60s
+
+# Resource limits
+LimitNOFILE=65535
+MemoryLimit=4G
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=vllm-wrapper
+
+[Install]
+WantedBy=multi-user.target

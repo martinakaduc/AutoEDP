@@ -1,0 +1,111 @@
+version: '3.8'
+
+services:
+  # vLLM Server
+  vllm-server:
+    image: vllm/vllm-openai:latest
+    container_name: vllm-server
+    ports:
+      - "8081:8081"
+    volumes:
+      - ~/.cache/huggingface:/root/.cache/huggingface
+    command: >
+      --model Qwen/Qwen2.5-Omni-7B
+      --served-model-name vllm:qwen-2.5-omni-7b
+      --port 8081
+      --max-model-len 32768
+      --tensor-parallel-size 1
+      --enable-auto-tool-choice
+      --tool-call-parser hermes
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    environment:
+      - CUDA_VISIBLE_DEVICES=0
+      - HUGGING_FACE_HUB_TOKEN=${HF_TOKEN}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+
+  # Wrapper Server
+  vllm-wrapper:
+    build:
+      context: .
+      dockerfile: Dockerfile.wrapper
+    container_name: vllm-wrapper
+    ports:
+      - "8082:8082"
+    volumes:
+      - ./logs:/app/logs
+      - .:/app/src
+    environment:
+      - VLLM_URL=http://vllm-server:8081/v1
+      - LOG_DIR=/app/logs/vllm
+      - HOST=0.0.0.0
+      - PORT=8082
+    depends_on:
+      vllm-server:
+        condition: service_healthy
+    command: >
+      python wrapper_server.py
+      --host ${HOST:-0.0.0.0}
+      --port ${PORT:-8082}
+      --vllm-url ${VLLM_URL:-http://vllm-server:8081/v1}
+      --log-dir ${LOG_DIR:-/app/logs/vllm}
+      --workers 4
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+  # Optional: Monitoring with Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: vllm-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+  # Optional: Grafana for visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: vllm-grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+volumes:
+  prometheus-data:
+  grafana-data:
+
+networks:
+  default:
+    name: vllm-network

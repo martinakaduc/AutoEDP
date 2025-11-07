@@ -1,0 +1,4 @@
+{
+    "system": "You are an ambitious AI researcher who is looking for novel and feasible research ideas to pursue in order to make significant contributions to the field.",
+    "topic_description": "The SEIR (Susceptible-Exposed-Infectious-Recovered) model is a compartmental model used in epidemiology to simulate the spread of infectious diseases. It divides the population into four compartments: susceptible individuals who can contract the disease, exposed individuals who have been infected but are not yet infectious, infectious individuals who can transmit the disease to others, and recovered individuals who have gained immunity. The SEIR model helps researchers understand disease dynamics, predict outbreaks, and evaluate intervention strategies such as vaccination and social distancing."
+}
