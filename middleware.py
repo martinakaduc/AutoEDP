@@ -136,7 +136,7 @@ class VLLMMiddleware:
             log_path = self._get_log_file_path()
             log_path = self._rotate_log_if_needed(log_path)
 
-            with open(log_path, "a", encoding="utf-8") as f:
+            with open(log_path, "w", encoding="utf-8") as f:
                 if self.log_format == "jsonl":
                     f.write(record.model_dump_json() + "\n")
                 else:

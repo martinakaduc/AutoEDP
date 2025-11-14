@@ -2,6 +2,8 @@ from typing import Callable
 
 import os
 import logging
+import requests
+import time
 
 
 def start_deep_research_pipeline(
@@ -38,6 +40,20 @@ def start_deep_research_pipeline(
                 "FINAL_REPORT_MODEL_PROVIDER": "openai",
             },
         )
+        server_ok = False
+        while server_ok is False:
+            try:
+                # Send a GET request to the health check endpoint
+                response = requests.get(f"http://localhost:{deeprs_port}/docs")
+
+                # Check if the server is healthy
+                if response.status_code == 200:
+                    server_ok = True
+                else:
+                    time.sleep(1)
+
+            except requests.exceptions.RequestException as e:
+                time.sleep(1)
     else:
         raise ValueError(f"Unsupported Deep Researcher framework: {deeprs_framework}")
 
