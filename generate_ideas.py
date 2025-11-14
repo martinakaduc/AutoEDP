@@ -22,7 +22,6 @@ class QuestionGenerationResponse(BaseModel):
 
 
 class NoveltyCheckResponse(BaseModel):
-    reason: str = ""
     query: str = ""
     novelty: str = ""
 
@@ -370,7 +369,6 @@ Decide a paper idea is not novel, if you have found a paper that significantly o
 
 novelty_prompt = '''Round {current_round}/{num_rounds}.
 You have this idea:
-
 """
 {idea}
 """
@@ -380,14 +378,14 @@ The results of the last query are (empty on first round):
 {last_query_results}
 """
 
-Respond in the following format:
+Respond in the following JSON format:
 ```json
 {{
-    "reason": <Your thoughts on the novelty of the idea, and how you arrived at your decision. Include any relevant observations from the papers you found.>,
-    "query": <A search query to search the literature for relevant papers to help you decide the novelty of the idea. If you have made your decision, leave this field empty.>,
+    "query": <A string to search the literature for relevant papers to help you decide the novelty of the idea. If you have made your decision, leave this field as an empty string.>,
     "novelty": <"novel" or "trivial" if you have made your decision, otherwise leave this field as an empty string.>
 }}
 ```
+This JSON will be automatically parsed, so ensure the format is precise.
 '''
 
 
@@ -407,10 +405,10 @@ async def check_idea_novelty(
 
     for idx, idea in enumerate(ideas):
         if "novel" in idea:
-            print(f"Skipping idea {idx}, already checked.")
+            print(f"Skipping research question {idx}, already checked.")
             continue
 
-        print(f"\nChecking novelty of idea {idx}: {idea['Name']}")
+        print(f"\nChecking novelty of research question {idx}: {idea['question']}")
 
         novel = False
         msg_history = []

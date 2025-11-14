@@ -7,6 +7,7 @@ import logging
 import json
 
 import torch
+from tqdm import tqdm
 from deepresearch import perform_deep_research
 from generate_ideas import generate_next_idea, check_idea_novelty
 from grpo import run_grpo_training, export_grpo_model
@@ -61,7 +62,7 @@ async def collect_data(
             topic_ideas.extend(prev_idea_archive)
             n_prev_ideas = len(prev_idea_archive)
 
-        for _ in range(n_questions_per_topic):
+        for _ in tqdm(range(n_questions_per_topic), desc=f"Generating {topic}"):
             topic_ideas = await generate_next_idea(
                 base_dir=topic_base_dir,
                 result_dir=result_dir,
@@ -87,7 +88,9 @@ async def collect_data(
         ideas.extend(topic_ideas[n_prev_ideas:])
 
     final_reports = []
-    for idea in ideas:
+    for idea in tqdm(ideas, desc="Performing DeepResearch"):
+        if "novel" in idea and not idea["novel"]:
+            continue
         research_question = idea["question"]
         final_report = await perform_deep_research(
             deeprs_framework=deeprs_framework,
