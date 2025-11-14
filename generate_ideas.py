@@ -7,7 +7,7 @@ from typing import List, Dict, Union
 import backoff
 import requests
 from pydantic import BaseModel
-from utils import get_response_from_llm, extract_json_between_markers
+from utils import get_response_from_llm
 
 S2_API_KEY = os.getenv("S2_API_KEY")
 
@@ -19,6 +19,12 @@ class QuestionGenerationResponse(BaseModel):
     interestingness: int = 0
     feasibility: int = 0
     novelty: int = 0
+
+
+class NoveltyCheckResponse(BaseModel):
+    reason: str = ""
+    query: str = ""
+    novelty: str = ""
 
 
 idea_first_prompt = """{topic_description}
@@ -349,9 +355,8 @@ def search_for_papers(
         raise NotImplementedError(f"{engine=} not supported!")
 
 
-novelty_system_msg = """You are an ambitious AI PhD student who is looking to publish a paper that will contribute significantly to the field.
-You have an idea and you want to check if it is novel or not. I.e., not overlapping significantly with existing literature or already well explored.
-Be a harsh critic for novelty, ensure there is a sufficient contribution in the idea for a new conference or workshop paper.
+novelty_system_msg = """You are an experienced researcher. You have a research question and you want to check if it is novel or not. I.e., not overlapping significantly with existing literature or already well explored.
+Be a harsh critic for novelty, ensure there is a sufficient contribution to the field.
 You will be given access to the Semantic Scholar API, which you may use to survey the literature and find relevant papers to help you make your decision.
 The top 10 results for any search query will be presented to you with the abstracts.
 
@@ -376,23 +381,14 @@ The results of the last query are (empty on first round):
 """
 
 Respond in the following format:
-
-THOUGHT:
-<THOUGHT>
-
-RESPONSE:
 ```json
-<JSON>
+{{
+    "reason": <Your thoughts on the novelty of the idea, and how you arrived at your decision. Include any relevant observations from the papers you found.>,
+    "query": <A search query to search the literature for relevant papers to help you decide the novelty of the idea. If you have made your decision, leave this field empty.>,
+    "novelty": <"novel" or "trivial" if you have made your decision, otherwise leave this field as an empty string.>
+}}
 ```
-
-In <THOUGHT>, first briefly reason over the idea and identify any query that could help you make your decision.
-If you have made your decision, add "Decision made: novel." or "Decision made: not novel." to your thoughts.
-
-In <JSON>, respond in JSON format with ONLY the following field:
-- "Query": An optional search query to search the literature (e.g. attention is all you need). You must make a query if you have not decided this round.
-
-A query will work best if you are able to recall the exact name of the paper you are looking for, or the authors.
-This JSON will be automatically parsed, so ensure the format is precise.'''
+'''
 
 
 async def check_idea_novelty(
@@ -422,7 +418,7 @@ async def check_idea_novelty(
 
         for j in range(max_num_iterations):
             try:
-                text, msg_history = await get_response_from_llm(
+                output, msg_history = await get_response_from_llm(
                     novelty_prompt.format(
                         current_round=j + 1,
                         num_rounds=max_num_iterations,
@@ -436,21 +432,23 @@ async def check_idea_novelty(
                         topic_description=topic_description,
                     ),
                     msg_history=msg_history,
+                    response_format=NoveltyCheckResponse,
                 )
-                if "decision made: novel" in text.lower():
+
+                ## PARSE OUTPUT
+                json_output = output.model_dump()
+                assert json_output is not None, "Failed to extract JSON from LLM output"
+
+                if json_output["novelty"].lower() == "novel":
                     print("Decision made: novel after round", j)
                     novel = True
                     break
-                if "decision made: not novel" in text.lower():
+                if json_output["novelty"].lower() == "trivial":
                     print("Decision made: not novel after round", j)
                     break
 
-                ## PARSE OUTPUT
-                json_output = extract_json_between_markers(text)
-                assert json_output is not None, "Failed to extract JSON from LLM output"
-
                 ## SEARCH FOR PAPERS
-                query = json_output["Query"]
+                query = json_output["query"]
                 papers = search_for_papers(query, result_limit=10, engine=engine)
                 if papers is None:
                     papers_str = "No papers found."
