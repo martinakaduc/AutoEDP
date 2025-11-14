@@ -420,7 +420,7 @@ async def check_idea_novelty(
                     novelty_prompt.format(
                         current_round=j + 1,
                         num_rounds=max_num_iterations,
-                        idea=idea,
+                        idea=idea['question'],
                         last_query_results=papers_str,
                     ),
                     client=client,

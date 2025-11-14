@@ -53,14 +53,11 @@ async def collect_data(
         n_prev_ideas = 0
         if round_idx > 0:
             pre_result_dir = f"data/round_{round_idx - 1}"
-            prev_idea_archive = []
             with open(os.path.join(pre_result_dir, topic_result_file), "r") as f:
                 seed_ideas = json.load(f)
-            for seed_idea in seed_ideas:
-                prev_idea_archive.append(json.dumps(seed_idea))
 
-            topic_ideas.extend(prev_idea_archive)
-            n_prev_ideas = len(prev_idea_archive)
+            topic_ideas.extend(seed_ideas)
+            n_prev_ideas = len(seed_ideas)
 
         for _ in tqdm(range(n_questions_per_topic), desc=f"Generating {topic}"):
             topic_ideas = await generate_next_idea(
