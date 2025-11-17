@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can machine learning models detect coordinated inauthentic behavior in social networks?",
+    "motivation": "Organized manipulation campaigns undermine social media integrity. Developing methods to identify coordinated networks could help platforms maintain authentic discourse and reduce misinformation spread.",
+    "interestingness": 9,
+    "feasibility": 7,
+    "novelty": 8
+  },
+  {
+    "question": "What computational approaches can measure and predict the health of online communities?",
+    "motivation": "Community moderation is often reactive. Creating predictive models that identify early warning signs of community degradation could enable proactive interventions to maintain positive environments.",
+    "interestingness": 8,
+    "feasibility": 8,
+    "novelty": 7
+  }
+]

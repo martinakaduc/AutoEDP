@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can AI systems learn individual user workflows to provide contextually relevant feature suggestions?",
+    "motivation": "Software has many unused features due to discoverability issues. Developing systems that understand user patterns and proactively suggest relevant features could improve productivity and software adoption.",
+    "interestingness": 8,
+    "feasibility": 8,
+    "novelty": 7
+  },
+  {
+    "question": "What machine learning approaches can predict and prevent software usability issues during design?",
+    "motivation": "Usability problems are often discovered late in development. Creating predictive models that identify potential issues early could reduce costly redesigns and improve user satisfaction.",
+    "interestingness": 8,
+    "feasibility": 7,
+    "novelty": 8
+  }
+]

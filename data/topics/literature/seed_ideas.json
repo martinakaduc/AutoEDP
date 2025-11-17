@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can language models capture and replicate the stylistic nuances of specific literary periods or authors?",
+    "motivation": "Literary style involves subtle linguistic patterns. Developing models that understand and generate period-specific or author-specific styles could assist in literary analysis and creative writing.",
+    "interestingness": 8,
+    "feasibility": 7,
+    "novelty": 8
+  },
+  {
+    "question": "What computational methods can identify and analyze thematic evolution across an author's complete works?",
+    "motivation": "Tracking thematic development requires extensive manual analysis. Creating automated systems could reveal patterns in how authors' concerns and perspectives evolve over their careers.",
+    "interestingness": 8,
+    "feasibility": 8,
+    "novelty": 7
+  }
+]

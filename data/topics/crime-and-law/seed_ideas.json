@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can we develop explainable AI systems for legal decision support that ensure transparency and accountability?",
+    "motivation": "Legal decisions require clear reasoning and justification. Creating AI systems that provide interpretable recommendations could enhance judicial processes while maintaining fairness and trust.",
+    "interestingness": 9,
+    "feasibility": 7,
+    "novelty": 8
+  },
+  {
+    "question": "What methods can detect and mitigate bias in predictive crime analytics systems?",
+    "motivation": "Predictive policing systems have shown demographic biases. Developing robust bias detection and mitigation techniques could improve fairness while maintaining effectiveness in crime prevention.",
+    "interestingness": 9,
+    "feasibility": 8,
+    "novelty": 8
+  }
+]

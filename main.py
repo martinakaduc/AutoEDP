@@ -98,6 +98,86 @@ async def collect_data(
     return final_reports
 
 
+def run_benchmark(args, model_configs, iteration: int = 0):
+    # Prepare output file path
+    model_name = model_configs["model_name"].split(":")[1]
+    output_file = os.path.join(
+        args.result_dir, model_name, f"{model_name}_iter{iteration}.jsonl"
+    )
+
+    if os.path.exists(output_file):
+        logging.info(
+            f"Benchmark results for model {model_configs['model_name']} at iteration {iteration} already exist at {output_file}. Skipping benchmark."
+        )
+        return
+
+    # Ensure output directory exists
+    if not os.path.exists(os.path.dirname(output_file)):
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
+    # Initialize Servers
+    server_pids = initialize_servers(
+        vllm_port=args.vllm_port,
+        middleware_port=args.middleware_port,
+        deeprs_port=args.deeprs_port,
+        deeprs_framework=args.deeprs_framework,
+        model_configs=model_configs,
+        log_dir="./benchmark_logs",
+    )
+
+    # Get Clients
+    _, deeprs_client = get_clients(
+        vllm_port=args.vllm_port,
+        deeprs_port=args.deeprs_port,
+        deeprs_framework=args.deeprs_framework,
+    )
+
+    # Run benchmark tasks here
+    async def run_benchmark_tasks():
+        # Load queries from query.jsonl
+        queries = []
+        query_file = os.path.join(args.data_dir, "benchmark", "query.jsonl")
+        with open(query_file, "r") as f:
+            for line in f:
+                if line.strip():
+                    queries.append(json.loads(line))
+
+        logging.info(f"Loaded {len(queries)} queries from {query_file}")
+
+        # Run deep research for each query
+        results = []
+        for query_data in tqdm(queries, desc="Running benchmark"):
+            query_id = query_data["id"]
+            prompt = query_data["prompt"]
+
+            logging.info(f"Processing query {query_id}: {prompt[:100]}...")
+
+            # Perform deep research
+            article = await perform_deep_research(
+                deeprs_framework=args.deeprs_framework,
+                deeprs_client=deeprs_client,
+                research_question=prompt,
+            )
+
+            # Create result entry
+            result = {"id": query_id, "prompt": prompt, "article": article}
+            results.append(result)
+
+        # Save results to jsonl file
+        with open(output_file, "w") as f:
+            for result in results:
+                f.write(json.dumps(result) + "\n")
+
+        logging.info(f"Saved {len(results)} results to {output_file}")
+        return results
+
+    # Run the async tasks
+    asyncio.run(run_benchmark_tasks())
+
+    # Terminate Inference Servers
+    terminate_servers(server_pids)
+
+
 def main(args):
     # Setting GPU
     num_gpus = torch.cuda.device_count()
@@ -105,6 +185,12 @@ def main(args):
 
     # Get model config
     model_configs = get_model_configs(args.model_path, num_gpus=num_gpus)
+
+    # Run benchmark before training
+    logging.info("Running benchmark before training...")
+    if not os.path.exists(args.result_dir):
+        os.makedirs(args.result_dir, exist_ok=True)
+    run_benchmark(args, model_configs, iteration=0)
 
     # Start improvement rounds
     for round_idx in range(args.n_rounds):
@@ -191,6 +277,10 @@ def main(args):
         # Update model path for next round
         model_configs["model_path"] = os.path.join(model_save_path, "model")
 
+        # Run benchmark after training
+        logging.info("Running benchmark after training...")
+        run_benchmark(args, model_configs, iteration=round_idx + 1)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -234,6 +324,12 @@ if __name__ == "__main__":
         type=str,
         default="./saves",
         help="Directory for model checkpoints",
+    )
+    parser.add_argument(
+        "--result_dir",
+        type=str,
+        default="./results",
+        help="Directory for benchmarking results",
     )
     parser.add_argument(
         "--n_rounds",

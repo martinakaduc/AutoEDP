@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can reinforcement learning improve portfolio optimization under changing market conditions?",
+    "motivation": "Traditional portfolio optimization assumes static distributions. Developing adaptive RL agents that learn from market dynamics could create more resilient investment strategies that respond to regime changes.",
+    "interestingness": 9,
+    "feasibility": 7,
+    "novelty": 8
+  },
+  {
+    "question": "What explainable AI techniques can enhance transparency in credit scoring models?",
+    "motivation": "Black-box credit models raise fairness and regulatory concerns. Creating interpretable models that maintain predictive accuracy could improve trust and help identify and address potential biases.",
+    "interestingness": 8,
+    "feasibility": 8,
+    "novelty": 7
+  }
+]

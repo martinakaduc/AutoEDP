@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can smart home systems learn and adapt to household routines without compromising privacy?",
+    "motivation": "Current smart homes require manual programming. Developing privacy-preserving learning systems that adapt to family patterns could automate home management while maintaining user control.",
+    "interestingness": 8,
+    "feasibility": 8,
+    "novelty": 7
+  },
+  {
+    "question": "What recommendation algorithms can suggest hobbies based on personality traits and skill development goals?",
+    "motivation": "People often struggle to find fulfilling hobbies. Creating intelligent recommendation systems that match individuals with suitable activities could enhance personal development and life satisfaction.",
+    "interestingness": 7,
+    "feasibility": 8,
+    "novelty": 7
+  }
+]

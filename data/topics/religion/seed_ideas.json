@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can NLP models identify conceptual parallels across sacred texts from different religious traditions?",
+    "motivation": "Comparative religious study requires deep knowledge of multiple traditions. Developing systems that identify thematic and conceptual connections could facilitate interfaith dialogue and scholarly research.",
+    "interestingness": 8,
+    "feasibility": 7,
+    "novelty": 8
+  },
+  {
+    "question": "What computational approaches can assist in preserving and making accessible endangered religious texts and oral traditions?",
+    "motivation": "Many religious traditions face preservation challenges. Creating AI tools for digitization, translation, and annotation could help maintain cultural heritage for future generations.",
+    "interestingness": 8,
+    "feasibility": 8,
+    "novelty": 7
+  }
+]

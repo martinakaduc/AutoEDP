@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can computer vision systems accurately match beauty products to diverse skin tones and undertones?",
+    "motivation": "Existing systems struggle with the full spectrum of skin tones. Developing more accurate matching algorithms could improve product recommendations and reduce purchase dissatisfaction across diverse populations.",
+    "interestingness": 8,
+    "feasibility": 8,
+    "novelty": 7
+  },
+  {
+    "question": "What deep learning approaches can predict emerging fashion trends from social media and runway data?",
+    "motivation": "Fashion trend forecasting remains largely intuitive. Creating data-driven prediction models could help designers and retailers anticipate market demands and reduce inventory waste.",
+    "interestingness": 8,
+    "feasibility": 7,
+    "novelty": 8
+  }
+]

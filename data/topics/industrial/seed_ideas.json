@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can computer vision systems detect manufacturing defects in real-time under varying lighting and production conditions?",
+    "motivation": "Manual quality inspection is slow and inconsistent. Developing robust vision systems that work reliably in industrial settings could improve product quality while reducing inspection costs.",
+    "interestingness": 8,
+    "feasibility": 8,
+    "novelty": 7
+  },
+  {
+    "question": "What reinforcement learning approaches can optimize multi-stage manufacturing processes with complex interdependencies?",
+    "motivation": "Manufacturing optimization involves cascading decisions across production stages. Creating RL agents that learn optimal control policies could significantly improve efficiency and reduce waste.",
+    "interestingness": 9,
+    "feasibility": 7,
+    "novelty": 8
+  }
+]

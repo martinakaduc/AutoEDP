@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can AI systems generate personalized multi-day itineraries that balance diverse traveler preferences and practical constraints?",
+    "motivation": "Trip planning involves complex tradeoffs between interests, time, budget, and logistics. Developing intelligent planning systems could reduce planning burden while creating more satisfying travel experiences.",
+    "interestingness": 8,
+    "feasibility": 8,
+    "novelty": 7
+  },
+  {
+    "question": "What multi-modal learning approaches can predict optimal travel times by integrating weather, events, and seasonal patterns?",
+    "motivation": "Travel timing significantly impacts experience and cost. Creating comprehensive prediction models could help travelers choose ideal times for destinations based on multiple factors.",
+    "interestingness": 8,
+    "feasibility": 7,
+    "novelty": 8
+  }
+]

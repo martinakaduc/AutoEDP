@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can neural networks learn flavor compatibility from molecular composition and culinary traditions?",
+    "motivation": "Flavor pairing often relies on chef intuition. Developing models that understand chemical and cultural aspects of taste could enable novel recipe creation while respecting traditional cuisines.",
+    "interestingness": 8,
+    "feasibility": 7,
+    "novelty": 8
+  },
+  {
+    "question": "What AI approaches can generate personalized meal plans that balance nutrition, preferences, and sustainability?",
+    "motivation": "Meal planning involves competing constraints. Creating multi-objective optimization systems could help individuals make healthier, sustainable food choices without sacrificing enjoyment.",
+    "interestingness": 8,
+    "feasibility": 8,
+    "novelty": 7
+  }
+]

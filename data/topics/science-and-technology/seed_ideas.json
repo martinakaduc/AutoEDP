@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can active learning guide automated experiment design to accelerate materials discovery?",
+    "motivation": "Materials discovery requires testing vast parameter spaces. Developing AI systems that intelligently select experiments could dramatically reduce time and cost in finding new materials with desired properties.",
+    "interestingness": 9,
+    "feasibility": 7,
+    "novelty": 8
+  },
+  {
+    "question": "What graph neural network architectures can better predict molecular properties for drug discovery?",
+    "motivation": "Molecular property prediction is crucial for drug development. Creating more accurate GNN models that capture complex molecular interactions could accelerate the discovery of therapeutic compounds.",
+    "interestingness": 9,
+    "feasibility": 8,
+    "novelty": 8
+  }
+]

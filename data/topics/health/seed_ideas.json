@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can federated learning enable collaborative medical AI development while preserving patient privacy?",
+    "motivation": "Medical data is sensitive and siloed across institutions. Developing privacy-preserving learning methods could enable large-scale model training without centralizing patient data.",
+    "interestingness": 9,
+    "feasibility": 7,
+    "novelty": 8
+  },
+  {
+    "question": "What multi-modal learning approaches can integrate clinical notes, imaging, and lab results for comprehensive diagnosis?",
+    "motivation": "Physicians consider diverse data sources for diagnosis. Creating models that effectively combine heterogeneous medical data could improve diagnostic accuracy and clinical decision support.",
+    "interestingness": 9,
+    "feasibility": 7,
+    "novelty": 8
+  }
+]

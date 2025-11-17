@@ -1,0 +1,16 @@
+[
+  {
+    "question": "How can NLP models assist in deciphering and translating ancient, partially damaged texts?",
+    "motivation": "Many historical texts remain unreadable due to damage or extinct languages. Developing AI systems that leverage linguistic patterns and context could unlock lost historical knowledge.",
+    "interestingness": 9,
+    "feasibility": 6,
+    "novelty": 9
+  },
+  {
+    "question": "What network analysis techniques can reveal hidden patterns in historical trade routes and cultural exchanges?",
+    "motivation": "Historical connections are often incomplete in records. Applying graph analysis to reconstruct historical networks could provide insights into how ideas, goods, and culture spread across civilizations.",
+    "interestingness": 8,
+    "feasibility": 7,
+    "novelty": 8
+  }
+]

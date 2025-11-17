@@ -221,6 +221,7 @@ MIT License. See `LICENSE`.
 - [vLLM](https://github.com/vllm-project/vllm) for fast inference and OpenAI compatibility
 - [LangGraph](https://github.com/langchain-ai/langgraph) & [Open Deep Research](https://github.com/langchain-ai/open_deep_research) for the research orchestration workflow
 - [AI Scientist](https://github.com/SakanaAI/AI-Scientist) for inspiration on research question generation and refinement
+- [DeepResearch Bench](https://github.com/Ayanami0730/deep_research_bench) for benchmarking dataset
 
 ## Contributing
 
