@@ -185,11 +185,11 @@ def main(args):
         export_grpo_model(
             model_path=model_configs["model_path"],
             lora_path=model_save_path,
-            output_path=model_save_path,
+            output_path=os.path.join(model_save_path, "model"),
         )
 
         # Update model path for next round
-        model_configs["model_path"] = model_save_path
+        model_configs["model_path"] = os.path.join(model_save_path, "model")
 
 
 if __name__ == "__main__":
