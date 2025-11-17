@@ -52,7 +52,7 @@ async def collect_data(
         # Load previous ideas if not the first round
         n_prev_ideas = 0
         if round_idx > 0:
-            pre_result_dir = f"data/round_{round_idx - 1}"
+            pre_result_dir = os.path.join(data_dir, f"round_{round_idx - 1}")
             with open(os.path.join(pre_result_dir, topic_result_file), "r") as f:
                 seed_ideas = json.load(f)
 
@@ -341,7 +341,6 @@ if __name__ == "__main__":
         "--topics",
         type=str,
         nargs="+",
-        choices=["seir", "earthquake-prediction"],
         help="List of research topics to start with",
     )
     parser.add_argument(
