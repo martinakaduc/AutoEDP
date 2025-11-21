@@ -259,8 +259,9 @@ def process_generated_data(
     for conversation in conversations:
         messages = conversation["messages"]
         response = conversation["response"]["choices"][0]["message"]["content"]
-        messages.append({"role": "assistant", "content": response})
-        training_data.append({"messages": messages})
+        if response is not None:
+            messages.append({"role": "assistant", "content": response})
+            training_data.append({"messages": messages})
 
     if tokenizer_name is not None:
         from transformers import AutoTokenizer

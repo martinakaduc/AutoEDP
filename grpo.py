@@ -43,7 +43,7 @@ GRPO_CMD = (
     "--bf16 "
     "--actor_learning_rate 1e-4 "
     "--critic_learning_rate 1e-5 "
-    "--init_kl_coef 0.0 "
+    "--init_kl_coef 0.01 "
     "--prompt_data {data_path} "
     "--input_key query "
     "--label_key response "

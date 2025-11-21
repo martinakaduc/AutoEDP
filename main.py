@@ -200,44 +200,47 @@ def main(args):
         data_dir = os.path.join(args.data_dir, f"round_{round_idx}")
         os.makedirs(data_dir, exist_ok=True)
 
-        # Initialize Servers
-        server_pids = initialize_servers(
-            vllm_port=args.vllm_port,
-            middleware_port=args.middleware_port,
-            deeprs_port=args.deeprs_port,
-            deeprs_framework=args.deeprs_framework,
-            model_configs=model_configs,
-            log_dir=data_dir,
-        )
-
-        # Get Clients
-        vllm_client, deeprs_client = get_clients(
-            vllm_port=args.vllm_port,
-            deeprs_port=args.deeprs_port,
-            deeprs_framework=args.deeprs_framework,
-        )
-
-        # Collect Data
-        logging.info("Starting data collection...")
-        logging.info(f"Starting round {round_idx + 1}/{args.n_rounds}...")
-        final_reports = asyncio.run(
-            collect_data(
-                round_idx=round_idx,
-                topics=args.topics,
-                vllm_client=vllm_client,
-                model_name=model_configs["model_name"],
-                deeprs_client=deeprs_client,
+        if not os.path.exists(os.path.join(data_dir, "conversations.jsonl")):
+            # Initialize Servers
+            server_pids = initialize_servers(
+                vllm_port=args.vllm_port,
+                middleware_port=args.middleware_port,
+                deeprs_port=args.deeprs_port,
                 deeprs_framework=args.deeprs_framework,
-                n_questions=args.n_questions,
-                num_reflections=args.num_reflections,
-                skip_novelty_check=args.skip_novelty_check,
-                paper_search_engine=args.paper_search_engine,
-                data_dir=args.data_dir,
+                model_configs=model_configs,
+                log_dir=data_dir,
             )
-        )
 
-        # Terminate Inference Servers
-        terminate_servers(server_pids)
+            # Get Clients
+            vllm_client, deeprs_client = get_clients(
+                vllm_port=args.vllm_port,
+                deeprs_port=args.deeprs_port,
+                deeprs_framework=args.deeprs_framework,
+            )
+
+            # Collect Data
+            logging.info("Starting data collection...")
+            logging.info(f"Starting round {round_idx + 1}/{args.n_rounds}...")
+            final_reports = asyncio.run(
+                collect_data(
+                    round_idx=round_idx,
+                    topics=args.topics,
+                    vllm_client=vllm_client,
+                    model_name=model_configs["model_name"],
+                    deeprs_client=deeprs_client,
+                    deeprs_framework=args.deeprs_framework,
+                    n_questions=args.n_questions,
+                    num_reflections=args.num_reflections,
+                    skip_novelty_check=args.skip_novelty_check,
+                    paper_search_engine=args.paper_search_engine,
+                    data_dir=args.data_dir,
+                )
+            )
+
+            # Terminate Inference Servers
+            terminate_servers(server_pids)
+        else:
+            final_reports = None
 
         # Process generated conversations in to trainable data
         data_path = os.path.join(data_dir, "train")
